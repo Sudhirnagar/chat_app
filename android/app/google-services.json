@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "590100334603",
+    "project_id": "zingchat-88917",
+    "storage_bucket": "zingchat-88917.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590100334603:android:8ac69cbe8c4401044cdf0e",
+        "android_client_info": {
+          "package_name": "com.example.zingchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOVZRS95XK0reGsmLx0nGfgdygSdy9IVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
