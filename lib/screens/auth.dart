@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,12 +17,34 @@ class _AuthScreenState extends State<AuthScreen> {
 
   var _islogin = true;
   var _enteredEmail = '';
-  var _enteredPass = '';
+  var _enteredPassword = '';
 
-  void _submit() {
+  void _submit() async {
     final isvalid = _form.currentState!.validate();
-    if (isvalid) {
-      _form.currentState!.save();
+    if (!isvalid) {
+      return;
+    }
+    _form.currentState!.save();
+
+    try {
+      if (_islogin) {
+        final userCredentials = await _firebase.signInWithEmailAndPassword(
+          email: _enteredEmail,
+          password: _enteredPassword,
+        );
+      } else {
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+          email: _enteredEmail,
+          password: _enteredPassword,
+        );
+      }
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? 'Authentication failed.'),
+        ),
+      );
     }
   }
 
@@ -54,7 +78,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           TextFormField(
                             decoration: const InputDecoration(
-                                labelText: 'Email Address'),
+                              labelText: 'Email Address',
+                            ),
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             textCapitalization: TextCapitalization.none,
@@ -64,7 +89,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   !value.contains('@')) {
                                 return 'Enter a valid Email address';
                               }
-
                               return null;
                             },
                             onSaved: (value) {
@@ -74,47 +98,50 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Password'),
+                            decoration: const InputDecoration(
+                              labelText: 'Password',
+                            ),
                             obscureText: true,
                             validator: (value) {
                               if (value == null || value.trim().length < 6) {
-                                return 'Password must contain atleast 6 character';
+                                return 'Password must contain at least 6 characters';
                               }
-
                               return null;
                             },
                             onSaved: (value) {
                               if (value != null) {
-                                _enteredPass= value;
+                                _enteredPassword = value;
                               }
                             },
                           ),
-                          SizedBox(
-                            height: 12,
-                          ),
+                          const SizedBox(height: 12),
                           ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer),
-                              onPressed: _submit,
-                              child: Text(_islogin ? 'Login' : 'Signup')),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                            ),
+                            onPressed: _submit,
+                            child: Text(_islogin ? 'Login' : 'Signup'),
+                          ),
                           TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _islogin = !_islogin;
-                                });
-                              },
-                              child: Text(_islogin
+                            onPressed: () {
+                              setState(() {
+                                _islogin = !_islogin;
+                              });
+                            },
+                            child: Text(
+                              _islogin
                                   ? 'Create an account'
-                                  : 'Already have an account'))
+                                  : 'Already have an account?',
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
