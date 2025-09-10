@@ -28,6 +28,7 @@ dependencies:
   cached_network_image: ^3.4.1
   gallery_saver_plus: ^3.2.9
   flutter_dotenv: ^6.0.0
+  http: ^1.5.0
   
 
 dev_dependencies:
