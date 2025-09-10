@@ -1,4 +1,4 @@
-# zingchat
+# chitchat
 
 A new Flutter project.
 

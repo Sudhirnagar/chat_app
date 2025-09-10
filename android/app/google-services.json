@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:590100334603:android:8ac69cbe8c4401044cdf0e",
+        "mobilesdk_app_id": "1:590100334603:android:4f47b00e79c23b334cdf0e",
         "android_client_info": {
-          "package_name": "com.example.zingchat"
+          "package_name": "com.example.chitchat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "590100334603-duv578im229v7emtk0uhmagh03q0trqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBOVZRS95XK0reGsmLx0nGfgdygSdy9IVk"
@@ -20,7 +25,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590100334603-duv578im229v7emtk0uhmagh03q0trqe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590100334603-ivdod17ecsc753t7e7bgb24hbte0fui6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zingchat"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590100334603:android:8ac69cbe8c4401044cdf0e",
+        "android_client_info": {
+          "package_name": "com.example.zingchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590100334603-duv578im229v7emtk0uhmagh03q0trqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOVZRS95XK0reGsmLx0nGfgdygSdy9IVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590100334603-duv578im229v7emtk0uhmagh03q0trqe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590100334603-ivdod17ecsc753t7e7bgb24hbte0fui6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zingchat"
+              }
+            }
+          ]
         }
       }
     }

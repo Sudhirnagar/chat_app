@@ -1,43 +1,78 @@
-import 'package:flutter/material.dart';
-import 'package:zingchat/screens/auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:zingchat/screens/chat.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:zingchat/screens/splash.dart';
-import 'firebase_options.dart';
+import 'dart:developer';
 
-void main() async {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
+
+import 'firebase_options.dart';
+import 'screens/splash_screen.dart';
+
+// global object for accessing device screen size
+late Size mq;
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const App());
+
+  // enter full-screen immersive mode
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+  // initialize firebase
+  await _initializeFirebase();
+
+  // lock orientation to portrait only
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  ).then((_) {
+    runApp(const MyApp());
+  });
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ZingChat',
+      title: 'chitchat', // <- yahan app ka naam badal diya
       debugShowCheckedModeBanner: false,
-      theme: ThemeData().copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 63, 17, 177),
+      theme: ThemeData(
+        useMaterial3: false,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          elevation: 1,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
+            fontSize: 19,
+          ),
+          backgroundColor: Colors.white,
         ),
       ),
-      home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SplashScreen();
-            }
-            if (snapshot.hasData) {
-              return const ChatScreen();
-            }
-            return const AuthScreen();
-          }),
+      home: const SplashScreen(),
     );
   }
+}
+
+Future<void> _initializeFirebase() async {
+  // avoid duplicate initialization
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    Firebase.app();
+  }
+
+  // register notification channel
+  var result = await FlutterNotificationChannel().registerNotificationChannel(
+    description: 'For Showing Message Notification',
+    id: 'chats',
+    importance: NotificationImportance.IMPORTANCE_HIGH,
+    name: 'Chats',
+  );
+
+  log('\nNotification Channel Result: $result');
 }
